@@ -2,16 +2,7 @@ import { useEffect, useState } from "react"
 import { getCurrentWeather } from "../services/services"
 import Grid2 from '@mui/material/Unstable_Grid2';
 import Box from '@mui/material/Box';
-import Paper from "@mui/material/Paper";
-import { styled } from "@mui/material/styles";
-
-const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-}));
+import moment from "moment";
 
 const CurrentWeatherBox = () => {
     const[weather, setWeather] = useState<any | null>(null);
@@ -22,21 +13,26 @@ const CurrentWeatherBox = () => {
     }, [])
 
     console.log(weather);
+
     return ( 
         <Box sx={{ flexGrow: 1 }}>
         {weather != null &&
             <Grid2 container spacing={1}>
             <Grid2 xs={6}>
-                <Item>{weather.name} {weather.weather[0].description}</Item>
+                <Box sx={{ fontSize: 19 , color: "#262626", pt: 1 }}>{weather.name}</Box>
+                <Box sx={{ fontSize: 13 , color: "#70757A", pt: 0.35 }}>{weather.weather[0].description.charAt(0).toUpperCase() + weather.weather[0].description.slice(1)}</Box>
             </Grid2>
             <Grid2 xs={6}>
-                <Item>{weather.weather[0].icon} {weather.main.temp} C</Item>
+                <Box sx={{textAlign: "right", fontSize: 26, color: "#262626", pt: 1}}><img src={`http://openweathermap.org/img/w/${weather.weather[0].icon}.png`} alt="Weather icon" id="icon" /> {Math.round(weather.main.temp)} &deg;C</Box>
             </Grid2>
             <Grid2 xs={6}>
-                <Item>{weather.dt}</Item>
+                <Box sx={{ fontSize: 15, color: "#262626", pt: 4 }}>{moment(new Date(weather.dt * 1000)).format('MMMM Do')}</Box>
+                <Box sx={{ fontSize: 13, color: "#70757A", pt: 0.35 }}>{moment(new Date(weather.dt * 1000)).format('HH:MM')}</Box>
             </Grid2>
             <Grid2 xs={6}>
-                <Item>{weather.wind.speed} - {weather.main.humidity} - {weather.rain}</Item>
+                <Box sx={{ textAlign: "right", fontSize: 13 , color: "#70757A", pt: 3 }}>Wind: {weather.wind.speed} m/s</Box>
+                <Box sx={{ textAlign: "right", fontSize: 13 , color: "#70757A" }}>Humidity: {weather.main.humidity} %</Box>
+                <Box sx={{ textAlign: "right", fontSize: 13 , color: "#70757A" }}>Precipitation: {weather.rain != null ? weather.rain : 0} mm</Box>
             </Grid2>
             </Grid2>
         }
