@@ -19,7 +19,14 @@ const weatherReducer = (state: WeatherState = initialState, action: WeatherActio
     case FETCH_WEATHER_SUCCESS:
       return {
         ...state,
-        data: { temperature: action.payload.temperature, condition: action.payload.condition },
+        data: { temperature: action.payload.temperature, 
+                condition: action.payload.condition,
+                name: action.payload.name,
+                icon: action.payload.icon,
+                date: action.payload.date,
+                windspeed: action.payload.windspeed,
+                humidity: action.payload.humidity,
+                precipitation: action.payload.precipitation },
         isLoading: false,
         error: null,
       };
